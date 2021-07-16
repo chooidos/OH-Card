@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { IOpenhabItem } from '../types/openHab';
 import { BASE_URL } from './constants';
+import SseClient from './sseClient';
 
 export const fetchAllItems = async () => {
   const response = await axios.get<IOpenhabItem[]>(`${BASE_URL}/rest/items`, {});
@@ -26,3 +27,30 @@ export const getItemStates = async (name: string, startTime?: string) => {
   }});
   return response.data;
 }
+
+export const initSseConnection = (connection: string) => {
+  return {
+    type: 'sse',
+    promise: (client: SseClient) =>
+      client
+        .connect(connection),
+  };
+};
+
+export const closeSseConnection = () => {
+  return {
+    type: 'sse',
+    promise: (client: SseClient) =>
+      client
+        .disconnect(),
+  };
+};
+
+export const hookIntoEvent = (event: string, cb: any) => {
+  return {
+    type: 'sse',
+    promise: (client: SseClient) =>
+      client
+        .on(event, cb),
+  }
+};
