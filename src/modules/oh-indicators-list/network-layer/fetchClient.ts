@@ -9,14 +9,17 @@ export const fetchAllItems = async () => {
   return response.data;
 };
 
-export const sseitems = async ()=> {
+export const sseitems = async (dispatch:any)=> {
   const events = new EventSource(`${BASE_URL}/rest/events?topics=openhab/items/*/statechanged,openhab/items/*/*/statechanged`);
   events.onmessage = (event) => {
     const data = JSON.parse(event.data);
     if (data.type === 'ItemStateChangedEvent') {
       const [,,name] = data.topic.split('/');
       const value = JSON.parse(data.payload).value;
-      return {name,value}
+      dispatch({
+        type: 'sseMy',
+        payload: {name,value}
+      })
     }
   }
 }

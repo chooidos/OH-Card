@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getAllItems, selectItems, selectErrorMessage } from './store';
-import { initSseConnection } from './network-layer/fetchClient';
+import { initSseConnection, sseitems } from './network-layer/fetchClient';
 import { BASE_URL } from './network-layer/constants';
 
 export const List = () => {
@@ -12,6 +12,7 @@ export const List = () => {
 
   useEffect(() => {
     dispatch(getAllItems());
+    sseitems(dispatch);
     dispatch(initSseConnection(`${BASE_URL}/rest/events?topics=openhab/items/*/statechanged,openhab/items/*/*/statechanged`));
   }, []);
 

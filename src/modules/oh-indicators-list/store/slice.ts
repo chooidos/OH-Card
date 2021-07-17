@@ -34,6 +34,11 @@ export const indicatorsSlice = createSlice<IState, any>({
         state.error = (action as any).error.message;
       }
     );
+    builder.addCase(
+      'sseMy', (state, action:PayloadAction<any,any>)=>{
+        state.items[action.payload.name].state = action.payload.value;
+      }
+    );
   },
 });
 
