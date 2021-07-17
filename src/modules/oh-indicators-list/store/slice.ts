@@ -1,16 +1,12 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchAllItems } from '../network-layer';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { IOpenhabItem } from '../types/openHab';
+import { getAllItems } from './actions';
 
 export interface IState {
   items: Record<string, IOpenhabItem>;
   error: string | null;
 }
-
-export const getAllItems = createAsyncThunk<IOpenhabItem[], void>(
-  'items/fetchAllItems',
-  fetchAllItems
-);
 
 export const indicatorsSlice = createSlice<IState, any>({
   name: 'persistentStateSlice',
@@ -35,7 +31,12 @@ export const indicatorsSlice = createSlice<IState, any>({
       }
     );
     builder.addCase(
-      'sseMy', (state, action:PayloadAction<any,any>)=>{
+      'items/sse/init', (state, action) => {
+        // todo
+      }
+    );
+    builder.addCase(
+      'items/sse/message', (state, action: PayloadAction<any, any>) => {
         state.items[action.payload.name].state = action.payload.value;
       }
     );

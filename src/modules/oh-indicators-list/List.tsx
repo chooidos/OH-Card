@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getAllItems, selectItems, selectErrorMessage } from './store';
-import { initSseConnection, sseitems } from './network-layer/fetchClient';
-import { BASE_URL } from './network-layer/constants';
+import { initStreamingConnection } from './store/actions';
 
 export const List = () => {
   const items = useSelector(selectItems);
@@ -12,8 +11,7 @@ export const List = () => {
 
   useEffect(() => {
     dispatch(getAllItems());
-    sseitems(dispatch);
-    dispatch(initSseConnection(`${BASE_URL}/rest/events?topics=openhab/items/*/statechanged,openhab/items/*/*/statechanged`));
+    dispatch(initStreamingConnection());
   }, []);
 
   return (
