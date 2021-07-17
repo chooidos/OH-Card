@@ -4,14 +4,14 @@ import { IOpenhabItem } from '../types/openHab';
 import { getAllItems } from './actions';
 
 export interface IState {
-  items: Record<string, IOpenhabItem>;
+  byId: Record<string, IOpenhabItem>;
   error: string | null;
 }
 
 export const indicatorsSlice = createSlice<IState, any>({
   name: 'persistentStateSlice',
   initialState: {
-    items: {},
+    byId: {},
     error: null,
   },
   reducers: {},
@@ -19,7 +19,7 @@ export const indicatorsSlice = createSlice<IState, any>({
     builder.addCase(
       getAllItems.fulfilled,
       (state, action: PayloadAction<IOpenhabItem[]>) => {
-        state.items = action.payload.reduce((items, item) => {
+        state.byId = action.payload.reduce((items, item) => {
           return { ...items, [item.name as string]: item as IOpenhabItem };
         }, {});
       }
@@ -37,7 +37,7 @@ export const indicatorsSlice = createSlice<IState, any>({
     );
     builder.addCase(
       'items/sse/message', (state, action: PayloadAction<any, any>) => {
-        state.items[action.payload.name].state = action.payload.value;
+        state.byId[action.payload.name].state = action.payload.value;
       }
     );
   },
