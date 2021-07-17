@@ -20,15 +20,24 @@ const parseStreamingResponse = (incomingMessage: MessageEvent): { name: string, 
 export const initStreamingConnection = createAsyncThunk<void, void>(
   'items/sse/init',
   (_, { dispatch }) => {
-    const events = new EventSource(`${BASE_URL}/rest/events?topics=openhab/items/*/statechanged,openhab/items/*/*/statechanged`);
-    events.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'ItemStateChangedEvent') {
-        dispatch({
-          type: 'items/sse/message',
-          payload: parseStreamingResponse(event),
-        });
-      }
-    };
+    return new Promise((resolve, reject) => {
+      const events = new EventSource(`${BASE_URL}/rest/events?topics=openhab/items/*/statechanged,openhab/items/*/*/statechanged`);
+      events.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'ItemStateChangedEvent') {
+          dispatch({
+            type: 'items/sse/message',
+            payload: parseStreamingResponse(event),
+          });
+        }
+      };
+      events.onopen = () => {
+        resolve();
+      };
+      events.onerror = () => {
+        events.close();
+        reject();
+      };
+    });
   },
 );
