@@ -5,6 +5,7 @@ import { getAllItems } from './actions';
 
 export interface IState {
   byId: Record<string, IOpenhabItem>;
+  isConnected: boolean;
   error: string | null;
 }
 
@@ -12,6 +13,7 @@ export const indicatorsSlice = createSlice<IState, any>({
   name: 'persistentStateSlice',
   initialState: {
     byId: {},
+    isConnected: false,
     error: null,
   },
   reducers: {},
@@ -23,20 +25,25 @@ export const indicatorsSlice = createSlice<IState, any>({
           return { ...items, [item.name as string]: item as IOpenhabItem };
         }, {});
       }
-    );
-    builder.addCase(
+    )
+    .addCase(
       getAllItems.rejected,
       (state, action: PayloadAction<any, any>) => {
         state.error = (action as any).error.message;
       }
-    );
-    builder.addCase(
-      'items/sse/init', (state, action) => {
-        // todo
+    )
+    .addCase(
+      'items/sse/connection/opened', (state, action) => {
+        state.isConnected = true;
       }
-    );
-    builder.addCase(
-      'items/sse/message', (state, action: PayloadAction<any, any>) => {
+    )
+    .addCase(
+      'items/sse/connection/closed', (state, action) => {
+        state.isConnected = false;
+      }
+    )
+    .addCase(
+      'items/sse/message/received', (state, action: PayloadAction<any, any>) => {
         state.byId[action.payload.name].state = action.payload.value;
       }
     );

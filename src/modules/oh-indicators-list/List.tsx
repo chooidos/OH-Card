@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { ConnectionIndicator } from '../../components/atoms/connection-indicator/ConnectionIndicator';
+import { store } from '../../store';
 
 import { getAllItems, selectItems, selectErrorMessage } from './store';
-import { initStreamingConnection } from './store/actions';
+import { selectIsConnected } from './store/selectors';
 
 const Root = styled.section`
   width: 100vw;
@@ -33,14 +36,18 @@ const Value = styled.div`
 export const List = () => {
   const items = useSelector(selectItems);
   const error = useSelector(selectErrorMessage);
+  const isSeeConnected = useSelector(selectIsConnected);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect((): any => {
     dispatch(getAllItems());
-    dispatch(initStreamingConnection());
+    dispatch({type:'items/sse/connection/init'});
+    return ()=> dispatch({type:'items/sse/connection/close'});
   }, []);
 
   return (
+    <>
+    <ConnectionIndicator isConnected={isSeeConnected}/>
     <Root className="App">
       {error}
       <UnorderedList>
@@ -52,5 +59,7 @@ export const List = () => {
         ))}
       </UnorderedList>
     </Root>
+    <Link to="/test">esfdsfdf</Link>
+    </>
   );
 }

@@ -1,19 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, HashRouter } from 'react-router-dom';
 
 import { List } from './modules/oh-indicators-list';
 
 const App = () => {
   return (
-    <Router>
+    <HashRouter>
       <div className="App">
         <Switch>
-          <Route path="">
+          <Route path="/test">
+            <>
+              <div>1</div>
+              <div>2</div>
+            </>
+          </Route>
+          <Route path="/" exact>
             <List />
           </Route>
         </Switch>
       </div>
-    </Router>
+    </HashRouter>
   );
 }
 
