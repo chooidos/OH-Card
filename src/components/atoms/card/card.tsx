@@ -1,4 +1,4 @@
-import { forwardRef, ComponentPropsWithoutRef, PropsWithChildren } from 'react';
+import React, { forwardRef, ComponentPropsWithoutRef, PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
 const CardRoot = styled.article`

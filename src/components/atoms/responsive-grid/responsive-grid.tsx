@@ -1,12 +1,11 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import LayoutItem, { Responsive, ResponsiveGridLayoutProps } from 'react-grid-layout';
 
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
 interface Props {
-  // @ts-ignore
-  children(l: LayoutItem, index: number): ReactNode;
+  children(l: any, index: number): ReactNode;
 }
 
 export const ResponsiveGrid = (props: ResponsiveGridLayoutProps & Props) => (
