@@ -1,11 +1,18 @@
 import React from 'react';
-import './App.css';
+import { List } from './modules/oh-indicators-list';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      
-    </div>
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route path="">
+            <List />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
