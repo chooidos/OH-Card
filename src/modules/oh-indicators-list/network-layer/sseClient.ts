@@ -1,16 +1,16 @@
 export interface IEventSourceInitializer {
-    init: (
-        x: string,
-        z: {
-            onMessageHandler: (y: any) => void,
-            onOpenHandler: (y: any) => void,
-            onErrorHandler: (y: any) => void,
-        }
-    ) => void
+  init: (
+    eventName: string,
+    eventHandlers: {
+      onMessageHandler: (event: MessageEvent) => void;
+      onOpenHandler: () => void;
+      onErrorHandler: (e: any) => void;
+    },
+  ) => void;
 }
 
 export interface IEventSourceFinalizer {
-    destroy: () => void
+  destroy: () => void;
 }
 
 export default class {

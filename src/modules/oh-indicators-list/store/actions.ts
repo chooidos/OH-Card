@@ -11,14 +11,14 @@ export const getAllItems = createAsyncThunk<IOpenhabItem[], void>(
 // TODO add typings
 
 export const receiveMessage = <T>(payload: T) => ({
-    type: 'items/sse/message/received',
-    payload,
+  type: 'items/sse/message/received',
+  payload,
 });
 
 export const connectionOpened = () => ({
-    type: 'items/sse/connection/opened'
+  type: 'items/sse/connection/opened',
 });
 
 export const connectionClosed = () => ({
-    type: 'items/sse/connection/closed'
+  type: 'items/sse/connection/closed',
 });

@@ -9,11 +9,12 @@ export const store = configureStore({
   reducer: {
     indicators: indicatorsSlice,
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [],
-    },
-  }).concat(sseMiddleware(new Client())),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [],
+      },
+    }).concat(sseMiddleware(new Client())),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
