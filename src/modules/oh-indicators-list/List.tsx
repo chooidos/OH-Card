@@ -41,25 +41,25 @@ export const List = () => {
 
   useEffect((): any => {
     dispatch(getAllItems());
-    dispatch({type:'items/sse/connection/init'});
-    return ()=> dispatch({type:'items/sse/connection/close'});
+    dispatch({ type:'items/sse/connection/init' });
+    return () => dispatch({type:'items/sse/connection/close'});
   }, []);
 
   return (
     <>
-    <ConnectionIndicator isConnected={isSeeConnected}/>
-    <Root className="App">
-      {error}
-      <UnorderedList>
-        {Object.keys(items).map(itemKey => (
-          <ListItem key={items[itemKey].name}>
-            <Headline>{items[itemKey].name}</Headline>
-            <Value>{items[itemKey].state}</Value>
-          </ListItem>
-        ))}
-      </UnorderedList>
-    </Root>
-    <Link to="/test">esfdsfdf</Link>
+      <ConnectionIndicator isConnected={isSeeConnected}/>
+      <Root className="App">
+        {error}
+        <UnorderedList>
+          {Object.keys(items).map(itemKey => (
+            <ListItem key={items[itemKey].name}>
+              <Headline>{items[itemKey].name}</Headline>
+              <Value>{items[itemKey].state}</Value>
+            </ListItem>
+          ))}
+        </UnorderedList>
+      </Root>
+      <Link to="/test">esfdsfdf</Link>
     </>
   );
 }
