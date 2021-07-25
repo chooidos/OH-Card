@@ -19,7 +19,7 @@ test('List.tsx e2e', async () => {
   const li = await ul?.waitForSelector('li', { state: 'attached' });
 
   // https://playwright.dev/docs/screenshots
-  expect(await page.screenshot()).toMatchSnapshot({ name: 'initial.png', threshold: laxThreshold });
+  expect(await page.screenshot()).toMatchSnapshot({ name: 'initial.png', threshold: 0.5 });
 
   // https://playwright.dev/docs/api/class-elementhandle#element-handle-eval-on-selector-all
   const liCount = await page.$$eval('li', lis => lis.length);

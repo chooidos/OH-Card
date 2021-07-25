@@ -16,12 +16,18 @@ const UnorderedList = styled.ul`
   list-style-type: none;
   display: flex;
   flex-wrap: wrap;
+  gap: 10px;
 `;
 
 const ListItem = styled.li`
   height: 75px;
   width: 150px;
   font-size: 12px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 15px 1px rgb(0 0 0 / 10%);
+  padding: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
 `;
 
 const Headline = styled.h3`
@@ -46,7 +52,9 @@ export const List = () => {
 
   return (
     <>
-      <ConnectionIndicator isConnected={isSeeConnected} />
+      <div style={{ margin: '1rem 2rem' }}>
+        <ConnectionIndicator isConnected={isSeeConnected} />
+      </div>
       <Root className="App">
         {error}
         <UnorderedList>

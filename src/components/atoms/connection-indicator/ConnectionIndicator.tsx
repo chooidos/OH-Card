@@ -5,8 +5,8 @@ interface IConnectionIndicator {
 }
 
 export const ConnectionIndicator = styled.div<IConnectionIndicator>`
-  height: 20px;
-  width: 20px;
+  height: 12px;
+  width: 12px;
   border-radius: 100%;
-  background-color: ${props => props.isConnected ? 'green': 'red'};
+  background-color: ${props => props.isConnected ? 'rgb(98,198,22)': 'red'};
 `;
