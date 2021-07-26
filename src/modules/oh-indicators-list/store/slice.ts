@@ -32,7 +32,7 @@ export const indicatorsSlice = createSlice<IState, any>({
           state.byId = action.payload.reduce(
             (items, item) => ({
               ...items,
-              [item.name as string]: item as IOpenhabItem,
+              [item.name]: item,
             }),
             {},
           );
@@ -51,7 +51,7 @@ export const indicatorsSlice = createSlice<IState, any>({
       .addCase(connectionClosed, (state) => {
         state.isConnected = false;
       })
-      .addCase(receiveMessage, (state, action: PayloadAction<any, any>) => {
+      .addCase(receiveMessage, (state, action: PayloadAction<{ name: string; value: any }>) => {
         state.byId[action.payload.name].state = action.payload.value;
       });
   },
