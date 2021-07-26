@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IOpenhabItem } from '../types/openHab';
-import { getAllItems } from './actions';
+import {
+  connectionClosed,
+  connectionOpened,
+  getAllItems,
+  receiveMessage,
+} from './actions';
 
 export interface IState {
   byId: Record<string, IOpenhabItem>;
@@ -40,18 +45,15 @@ export const indicatorsSlice = createSlice<IState, any>({
           state.error = (action as any).error.message;
         },
       )
-      .addCase('items/sse/connection/opened', (state, action) => {
-        state.isConnected = true;
+      .addCase(connectionOpened, (state, action: any) => {
+        state.isConnected = action.payload;
       })
-      .addCase('items/sse/connection/closed', (state, action) => {
+      .addCase(connectionClosed, (state) => {
         state.isConnected = false;
       })
-      .addCase(
-        'items/sse/message/received',
-        (state, action: PayloadAction<any, any>) => {
-          state.byId[action.payload.name].state = action.payload.value;
-        },
-      );
+      .addCase(receiveMessage, (state, action: PayloadAction<any, any>) => {
+        state.byId[action.payload.name].state = action.payload.value;
+      });
   },
 });
 
