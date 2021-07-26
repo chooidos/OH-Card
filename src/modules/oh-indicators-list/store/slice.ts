@@ -5,14 +5,16 @@ import { getAllItems } from './actions';
 
 export interface IState {
   byId: Record<string, IOpenhabItem>;
+  ids: string[];
   isConnected: boolean;
   error: string | null;
 }
 
 export const indicatorsSlice = createSlice<IState, any>({
-  name: 'persistentStateSlice',
+  name: 'indicatorsSlice',
   initialState: {
     byId: {},
+    ids: [],
     isConnected: false,
     error: null,
   },
@@ -22,9 +24,14 @@ export const indicatorsSlice = createSlice<IState, any>({
       .addCase(
         getAllItems.fulfilled,
         (state, action: PayloadAction<IOpenhabItem[]>) => {
-          state.byId = action.payload.reduce((items, item) => {
-            return { ...items, [item.name as string]: item as IOpenhabItem };
-          }, {});
+          state.byId = action.payload.reduce(
+            (items, item) => ({
+              ...items,
+              [item.name as string]: item as IOpenhabItem,
+            }),
+            {},
+          );
+          state.ids = action.payload.map(({ name }) => name);
         },
       )
       .addCase(

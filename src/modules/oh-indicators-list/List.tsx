@@ -42,10 +42,12 @@ export const List = () => {
   const isSeeConnected = useSelector(selectors.selectIsConnected);
   const dispatch = useDispatch();
 
-  useEffect((): any => {
+  useEffect(() => {
     dispatch(actions.getAllItems());
     dispatch(actions.initConnection());
-    return () => dispatch(actions.closeConnection());
+    return () => {
+      dispatch(actions.closeConnection());
+    };
   }, []);
 
   return (
@@ -56,12 +58,15 @@ export const List = () => {
       <Root className="App">
         {error}
         <UnorderedList>
-          {Object.keys(items).map((itemKey) => (
-            <ListItem key={items[itemKey].name}>
-              <Headline>{items[itemKey].name}</Headline>
-              <Value>{items[itemKey].state}</Value>
-            </ListItem>
-          ))}
+          {Object.keys(items).map((itemKey) => {
+            const { name, state } = items[itemKey];
+            return (
+              <ListItem key={name}>
+                <Headline>{name}</Headline>
+                <Value>{state}</Value>
+              </ListItem>
+            );
+          })}
         </UnorderedList>
       </Root>
       <Link to="/test">esfdsfdf</Link>

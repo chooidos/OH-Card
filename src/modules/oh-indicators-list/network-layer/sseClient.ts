@@ -3,14 +3,14 @@ export interface IEventSourceInitializer {
     eventName: string,
     eventHandlers: {
       onMessageHandler: (event: MessageEvent) => void;
-      onOpenHandler: () => void;
+      onOpenHandler: (eventName: string) => void;
       onErrorHandler: (e: any) => void;
     },
   ) => void;
 }
 
 export interface IEventSourceFinalizer {
-  destroy: () => void;
+  destroy: (eventName: string) => void;
 }
 
 export default class {
