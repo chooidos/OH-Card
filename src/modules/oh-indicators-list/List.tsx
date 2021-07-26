@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { ConnectionIndicator } from '../../components/atoms/connection-indicator/ConnectionIndicator';
-import { store } from '../../store';
 
-import { getAllItems, selectItems, selectErrorMessage } from './store';
-import { selectIsConnected } from './store/selectors';
+import { actions, selectors } from './store';
+import { ConnectionIndicator } from '../../components/atoms/connection-indicator/ConnectionIndicator';
 
 const Root = styled.section`
   width: 100vw;
@@ -39,15 +37,15 @@ const Headline = styled.h3`
 const Value = styled.div``;
 
 export const List = () => {
-  const items = useSelector(selectItems);
-  const error = useSelector(selectErrorMessage);
-  const isSeeConnected = useSelector(selectIsConnected);
+  const items = useSelector(selectors.selectItems);
+  const error = useSelector(selectors.selectErrorMessage);
+  const isSeeConnected = useSelector(selectors.selectIsConnected);
   const dispatch = useDispatch();
 
   useEffect((): any => {
-    dispatch(getAllItems());
-    dispatch({ type: 'items/sse/connection/init' });
-    return () => dispatch({ type: 'items/sse/connection/close' });
+    dispatch(actions.getAllItems());
+    dispatch(actions.initConnection());
+    return () => dispatch(actions.closeConnection());
   }, []);
 
   return (
