@@ -28,11 +28,11 @@ export default class SseClient {
   init(url: string, eventHandlers: IEventHandlers) {
     this.source = new EventSource(url);
     this.source.onmessage = event => eventHandlers.onMessageHandler(event);
-    this.source.onopen = () => {
-      eventHandlers.onOpenHandler();
+    this.source.onopen = () => eventHandlers.onOpenHandler();
+    this.source.onerror = () => {
+      eventHandlers.onErrorHandler();
       this.source?.close()
-    };
-    this.source.onerror = () => eventHandlers.onErrorHandler();
+    }
   }
   destroy() {
     this.source?.close();

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { parseStreamingResponse } from '../network-layer/sseClient';
 
 import { IOpenhabItem } from '../types/openHab';
 import {
@@ -13,8 +14,8 @@ export interface IState {
   byId: Record<string, IOpenhabItem>;
   ids: string[];
   sseConnection: {
-    connecting: boolean;
-    state: boolean;
+    isConnecting: boolean;
+    isConnected: boolean;
   };
   error: string | undefined;
 }
@@ -25,8 +26,8 @@ export const indicatorsSlice = createSlice({
     byId: {},
     ids: [],
     sseConnection: {
-      connecting: false,
-      state: false,
+      isConnecting: false,
+      isConnected: false,
     },
     error: undefined,
   } as IState,
@@ -53,18 +54,20 @@ export const indicatorsSlice = createSlice({
         },
       )
       .addCase(startConnection, (state) => {
-        state.sseConnection.connecting = true;
+        state.sseConnection.isConnecting = true;
       })
       .addCase(connectionOpened, (state) => {
-        state.sseConnection.state = true;
-        state.sseConnection.connecting = false;
+        state.sseConnection.isConnected = true;
+        state.sseConnection.isConnecting = false;
       })
       .addCase(connectionClosed, (state) => {
-        state.sseConnection.state = false;
-        state.sseConnection.connecting = false;
+        state.sseConnection.isConnected = false;
+        state.sseConnection.isConnecting = false;
       })
-      .addCase(receiveMessage, (state, action: PayloadAction<{ name: string; value: string }>) => {
-        state.byId[action.payload.name].state = action.payload.value;
+      // .addCase(receiveMessage, (state, action: PayloadAction<{ name: string; value: string }>) => {
+      .addCase(receiveMessage, (state, action) => {
+        const {name,value} = parseStreamingResponse(action.payload);
+        state.byId[name].state = value;
       });
   },
 });

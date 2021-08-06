@@ -17,16 +17,16 @@ const App = () => {
     <HashRouter>
       <div className="App">
       <div style={{ margin: '1rem 2rem' }}>
-        <ConnectionIndicator isConnected={sseConnection.state} />
-        {sseConnection.state ? (
+        <ConnectionIndicator isConnected={sseConnection.isConnected} />
+        {sseConnection.isConnected ? (
           <Link to="/test">Close connection</Link>
         ):(
-          <Link to="/">{sseConnection.connecting ? 'Connecting...' : 'Connect'}</Link>
+          <Link to="/">{sseConnection.isConnecting ? 'Connecting...' : 'Connect'}</Link>
         )}
       </div>
         <Switch>
           <Route path="/test">
-            <div>{sseConnection.state ? 'Disconnecting' : 'Connection closed'}</div>
+            <div>{sseConnection.isConnected ? 'Disconnecting' : 'Connection closed'}</div>
           </Route>
           <Route path="/" exact>
             <List />

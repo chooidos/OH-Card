@@ -1,12 +1,10 @@
 import {
   createAsyncThunk,
   createAction,
-  PayloadAction,
 } from '@reduxjs/toolkit';
 
 import { IOpenhabItem } from '../types/openHab';
 import { fetchAllItems } from '../network-layer';
-import { parseStreamingResponse } from '../network-layer/sseClient';
 
 export const getAllItems = createAsyncThunk<
   IOpenhabItem[],
@@ -33,17 +31,10 @@ enum SSE_ACTION_CONNECTION {
   Closed = 'connection/closed',
 }
 
-interface IMessageToConsumable {
-  (message: MessageEvent): Omit<
-    PayloadAction<ReturnType<typeof parseStreamingResponse>>,
-    'type'
-  >;
-}
-
-export const receiveMessage = createAction<IMessageToConsumable>(
+export const receiveMessage = createAction(
   `${SSE_ACTION}/message/received`,
   (input: MessageEvent) => ({
-    payload: parseStreamingResponse(input),
+    payload: input,
   }),
 );
 
