@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { actions, selectors } from './store';
-import { ConnectionIndicator } from '../../components/atoms/connection-indicator/ConnectionIndicator';
 
 const Root = styled.section`
   width: 100vw;
@@ -39,7 +37,6 @@ const Value = styled.div``;
 export const List = () => {
   const items = useSelector(selectors.selectItems);
   const error = useSelector(selectors.selectErrorMessage);
-  const isSeeConnected = useSelector(selectors.selectIsConnected);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,25 +48,19 @@ export const List = () => {
   }, []);
 
   return (
-    <>
-      <div style={{ margin: '1rem 2rem' }}>
-        <ConnectionIndicator isConnected={isSeeConnected} />
-      </div>
-      <Root className="App">
-        {error}
-        <UnorderedList>
-          {Object.keys(items).map((itemKey) => {
-            const { name, state } = items[itemKey];
-            return (
-              <ListItem key={name}>
-                <Headline>{name}</Headline>
-                <Value>{state}</Value>
-              </ListItem>
-            );
-          })}
-        </UnorderedList>
-      </Root>
-      <Link to="/test">esfdsfdf</Link>
-    </>
+    <Root className="App">
+      {error}
+      <UnorderedList>
+        {Object.keys(items).map((itemKey) => {
+          const { name, state } = items[itemKey];
+          return (
+            <ListItem key={name}>
+              <Headline>{name}</Headline>
+              <Value>{state}</Value>
+            </ListItem>
+          );
+        })}
+      </UnorderedList>
+    </Root>
   );
 };

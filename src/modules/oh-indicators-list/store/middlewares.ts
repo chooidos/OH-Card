@@ -5,18 +5,18 @@ import {
   IEventSourceInitializer,
   IEventSourceFinalizer,
 } from '../network-layer/sseClient';
-import { connectionClosed, connectionOpened, receiveMessage } from './actions';
+import { connectionClosed, connectionOpened, receiveMessage, startConnection } from './actions';
 import { RootState } from '../../../store';
 
-// todo: types
 export const sseMiddleware =
   (
     client: IEventSourceInitializer & IEventSourceFinalizer,
-  ): Middleware<{}, RootState> =>
+  ): Middleware<unknown, RootState> =>
   (store) =>
   (next) =>
   (action) => {
     if (action.type === 'items/sse/connection/init') {
+      store.dispatch(startConnection());
       client.init(
         // TODO make it configurable
         `${BASE_URL}/rest/events?topics=openhab/items/*/statechanged,openhab/items/*/*/statechanged`,
@@ -24,10 +24,10 @@ export const sseMiddleware =
           onMessageHandler: (event) => {
             const data = JSON.parse(event.data);
             if (data.type === 'ItemStateChangedEvent') {
-              return store.dispatch(receiveMessage!(event));
+              return store.dispatch(receiveMessage(event));
             }
           },
-          onOpenHandler: (event) => store.dispatch(connectionOpened(event)),
+          onOpenHandler: () => store.dispatch(connectionOpened()),
           onErrorHandler: () => store.dispatch(connectionClosed()),
         },
       );

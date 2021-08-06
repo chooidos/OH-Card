@@ -5,7 +5,7 @@ import indicatorsSlice, {
   IState,
 } from './modules/oh-indicators-list/store/slice';
 import { sseMiddleware } from './modules/oh-indicators-list/store/middlewares';
-import { Client } from './modules/oh-indicators-list';
+import { SseClient } from './modules/oh-indicators-list';
 
 export const store = configureStore({
   reducer: {
@@ -16,7 +16,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [],
       },
-    }).concat(sseMiddleware(new Client())),
+    }).concat(sseMiddleware(new SseClient())),
 });
 
 export type RootState = { indicators: IState };
