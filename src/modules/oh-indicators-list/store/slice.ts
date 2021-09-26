@@ -1,39 +1,68 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchAllItems } from '../network-layer';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { parseStreamingResponse } from '../network-layer/sseClient';
+
+import { ConnectionStates } from '../../../constants/network';
 import { IOpenhabItem } from '../types/openHab';
+import {
+  sseConnectionClosed,
+  sseConnectionOpened,
+  getAllItems,
+  receiveMessage,
+  startSseConnection,
+} from './actions';
 
 export interface IState {
-  items: Record<string, IOpenhabItem>;
-  error: string | null;
+  byId: Record<string, IOpenhabItem>;
+  ids: string[];
+  sseConnection: {
+    state: ConnectionStates;
+  };
+  error: string | undefined;
 }
 
-export const getAllItems = createAsyncThunk<IOpenhabItem[], void>(
-  'items/fetchAllItems',
-  fetchAllItems
-);
-
-export const indicatorsSlice = createSlice<IState, any>({
-  name: 'persistentStateSlice',
+export const indicatorsSlice = createSlice({
+  name: 'indicatorsSlice',
   initialState: {
-    items: {},
-    error: null,
-  },
+    byId: {},
+    ids: [],
+    sseConnection: {
+      state: ConnectionStates.Disconnected,
+    },
+    error: undefined,
+  } as IState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      getAllItems.fulfilled,
-      (state, action: PayloadAction<IOpenhabItem[]>) => {
-        state.items = action.payload.reduce((items, item) => {
-          return { ...items, [item.name as string]: item as IOpenhabItem };
-        }, {});
-      }
-    );
-    builder.addCase(
-      getAllItems.rejected,
-      (state, action: PayloadAction<any, any>) => {
-        state.error = (action as any).error.message;
-      }
-    );
+    builder
+      .addCase(
+        getAllItems.fulfilled,
+        (state, action: PayloadAction<IOpenhabItem[]>) => {
+          state.byId = action.payload.reduce(
+            (items, item) => ({
+              ...items,
+              [item.name]: item,
+            }),
+            {},
+          );
+          state.ids = action.payload.map(({ name }) => name);
+        },
+      )
+      .addCase(getAllItems.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(startSseConnection, (state) => {
+        state.sseConnection.state = ConnectionStates.Transition;
+      })
+      .addCase(sseConnectionOpened, (state) => {
+        state.sseConnection.state = ConnectionStates.Connected;
+      })
+      .addCase(sseConnectionClosed, (state) => {
+        state.sseConnection.state = ConnectionStates.Disconnected;
+      })
+      // .addCase(receiveMessage, (state, action: PayloadAction<{ name: string; value: string }>) => {
+      .addCase(receiveMessage, (state, action) => {
+        const { name, value } = parseStreamingResponse(action.payload);
+        state.byId[name].state = value;
+      });
   },
 });
 
