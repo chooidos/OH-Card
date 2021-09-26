@@ -38,8 +38,8 @@ export const receiveMessage = createAction(
   }),
 );
 
-export const initConnection = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Init}`);
-export const startConnection = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Start}`);
-export const closeConnection = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Close}`);
-export const connectionOpened = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Opened}`);
-export const connectionClosed = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Closed}`);
+export const initSseConnection = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Init}`);
+export const startSseConnection = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Start}`);
+export const closeSseConnection = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Close}`);
+export const sseConnectionOpened = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Opened}`);
+export const sseConnectionClosed = createAction<void>(`${SSE_ACTION}/${SSE_ACTION_CONNECTION.Closed}`);

@@ -5,7 +5,11 @@ import {
   IEventSourceInitializer,
   IEventSourceFinalizer,
 } from '../network-layer/sseClient';
-import { connectionClosed, connectionOpened, receiveMessage, startConnection } from './actions';
+import { 
+  sseConnectionClosed, 
+  sseConnectionOpened, 
+  receiveMessage, 
+  startSseConnection } from './actions';
 import { RootState } from '../../../store';
 
 export const sseMiddleware =
@@ -16,7 +20,7 @@ export const sseMiddleware =
   (next) =>
   (action) => {
     if (action.type === 'items/sse/connection/init') {
-      store.dispatch(startConnection());
+      store.dispatch(startSseConnection());
       client.init(
         // TODO make it configurable
         `${BASE_URL}/rest/events?topics=openhab/items/*/statechanged,openhab/items/*/*/statechanged`,
@@ -27,8 +31,8 @@ export const sseMiddleware =
               return store.dispatch(receiveMessage(event));
             }
           },
-          onOpenHandler: () => store.dispatch(connectionOpened()),
-          onErrorHandler: () => store.dispatch(connectionClosed()),
+          onOpenHandler: () => store.dispatch(sseConnectionOpened()),
+          onErrorHandler: () => store.dispatch(sseConnectionClosed()),
         },
       );
 
@@ -38,7 +42,7 @@ export const sseMiddleware =
   if (action.type === 'items/sse/connection/close') {
     client.destroy();
 
-      return store.dispatch(connectionClosed());
+      return store.dispatch(sseConnectionClosed());
     }
 
     return next(action);

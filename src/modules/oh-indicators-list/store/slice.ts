@@ -4,19 +4,17 @@ import { parseStreamingResponse } from '../network-layer/sseClient';
 import { ConnectionStates } from '../../../constants/network';
 import { IOpenhabItem } from '../types/openHab';
 import {
-  connectionClosed,
-  connectionOpened,
+  sseConnectionClosed,
+  sseConnectionOpened,
   getAllItems,
   receiveMessage,
-  startConnection,
+  startSseConnection,
 } from './actions';
 
 export interface IState {
   byId: Record<string, IOpenhabItem>;
   ids: string[];
   sseConnection: {
-    isConnecting: boolean;
-    isConnected: boolean;
     state: ConnectionStates;
   };
   error: string | undefined;
@@ -28,8 +26,6 @@ export const indicatorsSlice = createSlice({
     byId: {},
     ids: [],
     sseConnection: {
-      isConnecting: false,
-      isConnected: false,
       state: ConnectionStates.Disconnected,
     },
     error: undefined,
@@ -53,18 +49,13 @@ export const indicatorsSlice = createSlice({
       .addCase(getAllItems.rejected, (state, action) => {
         state.error = action.error.message;
       })
-      .addCase(startConnection, (state) => {
-        state.sseConnection.isConnecting = true;
+      .addCase(startSseConnection, (state) => {
         state.sseConnection.state = ConnectionStates.Transition;
       })
-      .addCase(connectionOpened, (state) => {
-        state.sseConnection.isConnected = true;
-        state.sseConnection.isConnecting = false;
+      .addCase(sseConnectionOpened, (state) => {
         state.sseConnection.state = ConnectionStates.Connected;
       })
-      .addCase(connectionClosed, (state) => {
-        state.sseConnection.isConnected = false;
-        state.sseConnection.isConnecting = false;
+      .addCase(sseConnectionClosed, (state) => {
         state.sseConnection.state = ConnectionStates.Disconnected;
       })
       // .addCase(receiveMessage, (state, action: PayloadAction<{ name: string; value: string }>) => {

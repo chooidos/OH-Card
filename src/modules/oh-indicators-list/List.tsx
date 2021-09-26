@@ -41,9 +41,9 @@ export const List = () => {
 
   useEffect(() => {
     dispatch(actions.getAllItems());
-    dispatch(actions.initConnection());
+    dispatch(actions.initSseConnection());
     return () => {
-      dispatch(actions.closeConnection());
+      dispatch(actions.closeSseConnection());
     };
   }, []);
 
