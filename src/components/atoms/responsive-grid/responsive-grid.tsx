@@ -25,8 +25,9 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 export const ResponsiveGrid = (props: any & Props) => {
   return (
     <ResponsiveGridLayout
-      className='layout'
+      className="layout"
       cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+      resizeHandle={(<Handle />) as any}
       {...props}
     >
       {props.children}

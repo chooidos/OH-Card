@@ -62,10 +62,10 @@ Primary.args = {
   children: cards.map((card: any) => (
     <Card key={card.key} title={card.title}>
       <span
-        className='text drag'
+        className="text"
         style={{ backgroundColor: "black", color: "white" }}
       >
-        this is draggableHandle
+        this is card content
       </span>
     </Card>
   )),

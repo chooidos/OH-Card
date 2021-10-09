@@ -20,9 +20,9 @@ const cards = [
 const App = () => {
   return (
     <Router>
-      <div className='App'>
+      <div className="App">
         <Switch>
-          <Route path=''>
+          <Route path="">
             {/* <List /> */}
             <ResponsiveGrid
               layouts={layouts}
@@ -30,7 +30,7 @@ const App = () => {
             >
               {cards.map((item, index) => (
                 <Card key={item.key} title={item.title}>
-                  <span className='text drag'>{index}</span>
+                  <span className="text">{index}</span>
                 </Card>
               ))}
             </ResponsiveGrid>
