@@ -18,42 +18,55 @@ export const Primary = Template.bind({});
 
 const layouts = {
   lg: [
-    { i: "a", x: 0, y: 0, w: 1, h: 4, static: false },
-    { i: "b", x: 5, y: 0, w: 3, h: 4, static: false },
-    { i: "c", x: 7, y: 0, w: 1, h: 4, static: false },
+    { i: "1", x: 0, y: 0, w: 1, h: 4, static: false },
+    { i: "2", x: 5, y: 0, w: 3, h: 4, static: false },
+    { i: "3", x: 7, y: 0, w: 1, h: 4, static: false },
   ],
   md: [
-    { i: "a", x: 0, y: 0, w: 1, h: 4, static: false },
-    { i: "b", x: 3, y: 0, w: 5, h: 4, static: false },
-    { i: "c", x: 8, y: 0, w: 1, h: 4, static: false },
+    { i: "1", x: 0, y: 0, w: 1, h: 4, static: false },
+    { i: "2", x: 3, y: 0, w: 5, h: 4, static: false },
+    { i: "3", x: 8, y: 0, w: 1, h: 4, static: false },
   ],
   sm: [
-    { i: "a", x: 0, y: 0, w: 1, h: 4, static: false },
-    { i: "b", x: 1, y: 0, w: 3, h: 4, static: false },
-    { i: "c", x: 4, y: 0, w: 1, h: 4, static: false },
+    { i: "1", x: 0, y: 0, w: 1, h: 4, static: false },
+    { i: "2", x: 1, y: 0, w: 3, h: 4, static: false },
+    { i: "3", x: 4, y: 0, w: 1, h: 4, static: false },
   ],
   xs: [
-    { i: "a", x: 0, y: 0, w: 2, h: 2, static: false },
-    { i: "b", x: 1, y: 2, w: 2, h: 2, static: false },
-    { i: "c", x: 4, y: 4, w: 2, h: 2, static: false },
+    { i: "1", x: 0, y: 0, w: 2, h: 2, static: false },
+    { i: "2", x: 1, y: 2, w: 2, h: 2, static: false },
+    { i: "3", x: 4, y: 4, w: 2, h: 2, static: false },
   ],
   xxs: [
-    { i: "a", x: 0, y: 0, w: 1, h: 1, static: false },
-    { i: "b", x: 0, y: 1, w: 1, h: 1, static: false },
-    { i: "c", x: 0, y: 2, w: 1, h: 1, static: false },
+    { i: "1", x: 0, y: 0, w: 1, h: 1, static: false },
+    { i: "2", x: 0, y: 1, w: 1, h: 1, static: false },
+    { i: "3", x: 0, y: 2, w: 1, h: 1, static: false },
   ],
 };
 
+const cards = [
+  { title: "a", key: "1" },
+  { title: "b", key: "2" },
+  { title: "c", key: "3" },
+];
+
 Primary.args = {
   layouts,
-  breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
-  cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+  cards,
+  isDraggable: true,
+  isRearrangeable: true,
+  isResizable: true,
   rowHeight: 30,
   compactType: "vertical",
   draggableHandle: ".drag",
-  children: (l:any, i:any) => (
-    <Card key={l.i} title={l.i}>
-      <span className="text drag">{i}</span>
+  children: cards.map((card: any) => (
+    <Card key={card.key} title={card.title}>
+      <span
+        className='text drag'
+        style={{ backgroundColor: "black", color: "white" }}
+      >
+        this is draggableHandle
+      </span>
     </Card>
-  ),
+  )),
 };

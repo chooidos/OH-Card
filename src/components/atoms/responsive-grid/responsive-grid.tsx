@@ -14,7 +14,7 @@ import { Card } from "../card/card";
 
 interface Props {
   children(l: any, index: number): ReactNode;
-  cards: { 
+  cards: {
     title: string;
     key: string;
   }[];
@@ -23,17 +23,13 @@ interface Props {
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export const ResponsiveGrid = (props: any & Props) => {
-  const { cards, layouts } = props;
   return (
     <ResponsiveGridLayout
-      className="layout"
-      layouts={layouts}
-      isDraggable
-      isRearrangeable
-      isResizable={true}
+      className='layout'
       cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+      {...props}
     >
-      {cards.map((card: any) => <Card title={card.title} key={card.key} />)}
+      {props.children}
     </ResponsiveGridLayout>
   );
 };
