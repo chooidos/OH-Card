@@ -51,7 +51,7 @@ Primary.args = {
   rowHeight: 30,
   compactType: "vertical",
   draggableHandle: ".drag",
-  children: (l, i) => (
+  children: (l:any, i:any) => (
     <Card key={l.i} title={l.i}>
       <span className="text drag">{i}</span>
     </Card>

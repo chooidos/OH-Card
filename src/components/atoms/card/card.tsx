@@ -5,13 +5,14 @@ import React, {
   ForwardedRef,
 } from "react";
 import styled from "styled-components";
-import Z from Y;
+// import Z from Y;
 
 const CardRoot = styled.article`
   box-sizing: border-box;
   padding: 10px;
-  border-radius: 4px;
-  box-shadow: 2px 2px 10px rgb(0 0 0 / 5%);
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px rgb(0 0 0 / 15%);
+  background: #faffff;
 `;
 
 const Headline = styled.h2`
@@ -32,7 +33,6 @@ export const Card = forwardRef<
     style={{ ...style }}
     className={className}
     ref={ref}
-    key={props.key}
     {...props}
   >
     <Headline>{props.title}</Headline>
