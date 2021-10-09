@@ -1,11 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
-import persistantStateSlice from './modules/oh-indicators-list/store/slice';
+
+// TODO fix module exports
+import indicatorsSlice, {
+  IState,
+} from './modules/oh-indicators-list/store/slice';
+import { sseMiddleware } from './modules/oh-indicators-list/store/middlewares';
+import { SseClient } from './modules/oh-indicators-list';
 
 export const store = configureStore({
   reducer: {
-    indicators: persistantStateSlice,
+    indicators: indicatorsSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [],
+      },
+    }).concat(sseMiddleware(new SseClient())),
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = { indicators: IState };
 export type AppDispatch = typeof store.dispatch;
