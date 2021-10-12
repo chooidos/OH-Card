@@ -1,0 +1,5 @@
+.react-grid-item.react-grid-placeholder {
+  background: #e1e2dd;
+  border: 2px dashed grey;
+  border-radius: 4px;
+}

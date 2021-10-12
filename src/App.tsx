@@ -6,6 +6,22 @@ import { ConnectionIndicator } from './components/atoms/connection-indicator/Con
 import { ConnectionStates } from './constants/network';
 import { List } from './modules/oh-indicators-list';
 import { selectors } from './modules/oh-indicators-list/store';
+import { Card } from "./components/atoms/card/card";
+import { ResponsiveGrid } from "./components/atoms/responsive-grid/responsive-grid";
+
+const layouts = {
+  lg: [
+    { i: "1", x: 0, y: 0, w: 1, h: 1, static: false },
+    { i: "2", x: 1, y: 0, w: 3, h: 2, static: false },
+    { i: "3", x: 6, y: 0, w: 1, h: 2, static: false },
+  ],
+};
+
+const cards = [
+  { title: "a", key: "1" },
+  { title: "b", key: "2" },
+  { title: "c", key: "3" },
+];
 
 const App = () => {
   const sseConnection = useSelector(selectors.selectIsConnected);
@@ -32,6 +48,16 @@ const App = () => {
           </Route>
           <Route path="/" exact>
             <List />
+            <ResponsiveGrid
+              layouts={layouts}
+              cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+            >
+              {cards.map((item, index) => (
+                <Card key={item.key} title={item.title}>
+                  <span className="text">{index}</span>
+                </Card>
+              ))}
+            </ResponsiveGrid>
           </Route>
         </Switch>
       </div>
