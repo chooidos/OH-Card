@@ -33,7 +33,7 @@ enum SSE_ACTION_CONNECTION {
 
 export const receiveMessage = createAction(
   `${SSE_ACTION}/message/received`,
-  (input: MessageEvent) => ({
+  (input: Record<string,string>) => ({
     payload: input,
   }),
 );

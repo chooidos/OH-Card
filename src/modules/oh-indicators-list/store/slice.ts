@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { parseStreamingResponse } from '../network-layer/sseClient';
 
 import { ConnectionStates } from '../../../constants/network';
 import { IOpenhabItem } from '../types/openHab';
@@ -60,7 +59,7 @@ export const indicatorsSlice = createSlice({
       })
       // .addCase(receiveMessage, (state, action: PayloadAction<{ name: string; value: string }>) => {
       .addCase(receiveMessage, (state, action) => {
-        const { name, value } = parseStreamingResponse(action.payload);
+        const { name, value } = action.payload;
         state.byId[name].state = value;
       });
   },
