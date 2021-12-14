@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import {
   Responsive,
-  ResponsiveGridLayoutProps,
   WidthProvider,
 } from "react-grid-layout";
 

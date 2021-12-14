@@ -4,6 +4,7 @@ import { BASE_URL } from '../network-layer/constants';
 import {
   IEventSourceInitializer,
   IEventSourceFinalizer,
+  parseStreamingResponse,
 } from '../network-layer/sseClient';
 import { 
   sseConnectionClosed, 
@@ -28,7 +29,8 @@ export const sseMiddleware =
           onMessageHandler: (event) => {
             const data = JSON.parse(event.data);
             if (data.type === 'ItemStateChangedEvent') {
-              return store.dispatch(receiveMessage(event));
+              const parsedData = parseStreamingResponse(event);
+              return store.dispatch(receiveMessage(parsedData));
             }
           },
           onOpenHandler: () => store.dispatch(sseConnectionOpened()),
