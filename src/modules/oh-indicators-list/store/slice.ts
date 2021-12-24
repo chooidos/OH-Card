@@ -10,7 +10,7 @@ import {
   startSseConnection,
 } from './actions';
 
-export interface IState {
+export interface IindicatorsState {
   byId: Record<string, IOpenhabItem>;
   ids: string[];
   sseConnection: {
@@ -28,7 +28,7 @@ export const indicatorsSlice = createSlice({
       state: ConnectionStates.Disconnected,
     },
     error: undefined,
-  } as IState,
+  } as IindicatorsState,
   reducers: {},
   extraReducers: (builder) => {
     builder
