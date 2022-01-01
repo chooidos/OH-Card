@@ -1,48 +1,28 @@
-import React from "react";
+import React, {ReactElement, useMemo} from "react";
+import { LayoutItem } from "react-grid-layout";
 
 import { ResponsiveGrid } from "../../atoms/responsive-grid/responsive-grid";
-import { Card } from "../../atoms/card/card";
-import { Dropdown } from "../../atoms/dropdown/dropdown";
-import { useSelector } from "react-redux";
-import { selectors } from "../../../modules/oh-indicators-list/store";
-import { selectors as uiSelectors} from "../../../modules/ui-room-builder/store";
-import { Group } from "react-dropdown";
 
-export const ResponsiveCards = () => {
-  const groupedIndicators = useSelector(selectors.selectItemsByGroups);
-  const cards = useSelector(uiSelectors.selectCards);
-  const layouts = {
+import { UICard } from "../../../modules/ui-room-builder/store/slice";
+
+interface Props {
+  cards: UICard[];
+  onLayoutChange: (x: typeof LayoutItem[]) => void;
+  renderCard: (item: UICard, index: number) => ReactElement,
+}
+
+export const ResponsiveCards = ({ cards, onLayoutChange, renderCard }: Props) => {
+  const layouts = useMemo(() => ({
     lg: cards.map((card) => card.layout)
-  };
-  const options: Group[] =[];
-
-  for (const type in groupedIndicators) {
-
-    const group = {
-      type: 'group',
-      name: type,
-      items: groupedIndicators[type].map((indicator)=>{
-        return {
-          value: indicator.name,
-          label: indicator.name,
-        }
-      }),
-    } as Group
-
-    options.push(group);
-  }
+  }), [cards]);
 
   return (
     <ResponsiveGrid
       layouts={layouts}
       cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+      onLayoutChange={onLayoutChange}
     >
-      {cards.map((item, index) => (
-        <Card key={item.layout.i} title={item.title}>
-          <span className="text">{index}</span>
-          <Dropdown options={options} />
-        </Card>
-      ))}
+      {cards.map(renderCard)}
     </ResponsiveGrid>
   );
 };

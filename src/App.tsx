@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, HashRouter, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Switch, Route, HashRouter } from 'react-router-dom';
 
-import { ResponsiveCards } from './components/molecules/cards/responsive-cards';
 import { actions } from './modules/oh-indicators-list/store';
+import { RoomBuilder } from "./modules/ui-room-builder/room-builder";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const App = () => {
       <div className="App">
         <Switch>
           <Route path="/" exact>
-            <ResponsiveCards />
+            <RoomBuilder />
           </Route>
         </Switch>
       </div>

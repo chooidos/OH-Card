@@ -1,14 +1,15 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { LayoutItem } from "react-grid-layout";
 
-interface UICArd {
-  layout: any;
+export interface UICard {
+  layout: typeof LayoutItem;
   indicatorName: string;
   title: string;
 }
 
 export interface IUIState {
   isInEditMode: boolean;
-  cards: UICArd[];
+  cards: UICard[];
 }
 
 export const uiSlice = createSlice({
@@ -17,14 +18,19 @@ export const uiSlice = createSlice({
     isInEditMode: false,
     cards: [
       {
-        layout: { i: '1', x: 2, y: 0, w: 1, h: 1, static: false },
+        id: '0',
+        layout: { i: '0', x: 2, y: 0, w: 1, h: 1, static: false },
         indicatorName: 'room_kitchen_Pressure',
         title: 'some title'
       }
     ]
   },
-  reducers: {},
-  // extraReducers: (builder) => {},
+  reducers: {
+    updateLayoutById(state, action) {
+      console.log(state, action);
+    },
+  },
 });
 
+export const { updateLayoutById } = uiSlice.actions;
 export default uiSlice.reducer;

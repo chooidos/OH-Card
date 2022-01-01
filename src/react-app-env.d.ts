@@ -75,7 +75,7 @@ declare module 'react-grid-layout' {
 
   const Grid: React.FC<GridLayoutProps>;
   export = Grid;
-  export = LayoutItem;
+  export const LayoutItem;
 
   export const WidthProvider;
 }
