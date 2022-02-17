@@ -1,6 +1,5 @@
 import { Middleware } from 'redux';
 
-import { BASE_URL } from '../network-layer/constants';
 import {
   IEventSourceInitializer,
   IEventSourceFinalizer,
@@ -22,9 +21,10 @@ export const sseMiddleware =
   (action) => {
     if (action.type === 'items/sse/connection/init') {
       store.dispatch(startSseConnection());
+      
       client.init(
         // TODO make it configurable
-        `${BASE_URL}/rest/events?topics=openhab/items/*/statechanged,openhab/items/*/*/statechanged`,
+        `${action.payload.url}/rest/events?topics=openhab/items/${action.payload.items}/statechanged,openhab/items/*/*/statechanged`,
         {
           onMessageHandler: (event) => {
             const data = JSON.parse(event.data);

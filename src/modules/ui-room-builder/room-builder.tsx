@@ -15,6 +15,7 @@ export const RoomBuilder = () => {
   const dispatch = useDispatch();
   const groupedIndicators = useSelector(selectors.selectItemsByGroups);
   const cards = useSelector(uiSelectors.selectCards);
+  const editMode = useSelector(uiSelectors.selectEditMode)
 
   const options: Group[] =[];
 
@@ -43,9 +44,9 @@ export const RoomBuilder = () => {
     <ResponsiveCards
       onLayoutChange={onLayoutChange}
       cards={cards}
-      renderCard={(item, index) => (
-        <Card key={item.layout.i} title={item.title}>
-          <span className="text">{index}</span>
+      isInEditMode={editMode}
+      renderCard={(item) => (
+        <Card key={item.layout.i} title={item.title} isInEditMode={editMode}>
           <Dropdown options={options} />
         </Card>
       )}

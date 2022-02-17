@@ -7,6 +7,9 @@ import indicatorsSlice, {
 import { sseMiddleware } from './modules/oh-indicators-list/store/middlewares';
 import { SseClient } from './modules/oh-indicators-list';
 import uiSlice, { IUIState } from './modules/ui-room-builder/store';
+import { localStorageMiddleware } from './modules/ui-room-builder/store/middlewares';
+
+const middlewares = [sseMiddleware(new SseClient()), localStorageMiddleware];
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +21,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [],
       },
-    }).concat(sseMiddleware(new SseClient())),
+    }).concat(middlewares),
 });
 
 export type RootState = { indicators: IindicatorsState, ui: IUIState};

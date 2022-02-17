@@ -1,5 +1,5 @@
 import React, { forwardRef, ForwardedRef } from "react";
-import { ChevronMini16 } from "@carbon/icons-react";
+import { ChevronMini16, NotificationNew32 } from "@carbon/icons-react";
 import styled from "styled-components";
 
 const StyledHandleRoot = styled.div`
@@ -11,10 +11,11 @@ const StyledHandleRoot = styled.div`
 `;
 
 const Handle = forwardRef(
-  (props: { handleAxis?: string }, ref?: ForwardedRef<HTMLDivElement>) => {
-    const { handleAxis, ...restProps } = props;
+  (props: { handleAxis?: string, editMode?:boolean }, ref?: ForwardedRef<HTMLDivElement>) => {
+    const { handleAxis, editMode, ...restProps } = props;
     return (
       <StyledHandleRoot
+      style={{display: editMode ? "inline": "none"}}
         ref={ref}
         className={`handle-${handleAxis}`}
         {...restProps}
