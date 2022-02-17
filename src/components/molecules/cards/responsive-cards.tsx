@@ -1,29 +1,38 @@
-import React from "react";
+import React, { ReactElement, useMemo } from 'react';
+import { LayoutItem } from 'react-grid-layout';
 
-import { ResponsiveGrid } from "../../atoms/responsive-grid/responsive-grid";
-import { Card } from "../../atoms/card/card";
+import { ResponsiveGrid } from '../../atoms/responsive-grid/responsive-grid';
 
-export const ResponsiveCards = () => {
-  const layouts = {
-    lg: [
-      { i: '1', x: 0, y: 0, w: 1, h: 1, static: false },
-    ],
-  };
+import { UICard } from '../../../modules/ui-room-builder/store/slice';
 
-  const cards = [
-    { title: 'a', key: '1' },
-  ];
+interface Props {
+  isInEditMode: boolean;
+  cards: UICard[];
+  onLayoutChange: (x: typeof LayoutItem[]) => void;
+  renderCard: (item: UICard, index: number) => ReactElement;
+}
+
+export const ResponsiveCards = ({
+  cards,
+  onLayoutChange,
+  renderCard,
+  isInEditMode,
+}: Props) => {
+  const layouts = useMemo(
+    () => ({
+      lg: cards.map((card) => card.layout),
+    }),
+    [cards],
+  );
 
   return (
     <ResponsiveGrid
       layouts={layouts}
+      isInEditMode={isInEditMode}
       cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+      onLayoutChange={onLayoutChange}
     >
-      {cards.map((item, index) => (
-        <Card key={item.key} title={item.title}>
-          <span className="text">{index}</span>
-        </Card>
-      ))}
+      {cards.map(renderCard)}
     </ResponsiveGrid>
   );
 };

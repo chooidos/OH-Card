@@ -1,14 +1,11 @@
-import React, { ReactNode } from "react";
-import {
-  Responsive,
-  WidthProvider,
-} from "react-grid-layout";
+import React, { ReactNode } from 'react';
+import { Responsive, WidthProvider } from 'react-grid-layout';
 
-import { Handle } from "../resize-handle/ResizeHandle";
+import { Handle } from '../resize-handle/resize-handle';
 
-import "react-grid-layout/css/styles.css";
-import "react-resizable/css/styles.css";
-import "./styles.css";
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+import './styles.css';
 
 interface Props {
   children(l: any, index: number): ReactNode;
@@ -25,7 +22,10 @@ export const ResponsiveGrid = (props: any & Props) => {
     <ResponsiveGridLayout
       className="layout"
       cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-      resizeHandle={(<Handle />) as any}
+      isDraggable={props.isInEditMode}
+      isResizable={props.isInEditMode}
+      isRearrangeable={props.isInEditMode}
+      resizeHandle={(<Handle editMode={props.isInEditMode} />) as any}
       draggableHandle=".drag"
       {...props}
     >

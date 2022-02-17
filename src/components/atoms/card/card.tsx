@@ -3,9 +3,9 @@ import React, {
   ComponentPropsWithoutRef,
   PropsWithChildren,
   ForwardedRef,
-} from "react";
-import styled from "styled-components";
-import { Draggable16 } from "@carbon/icons-react";
+} from 'react';
+import styled from 'styled-components';
+import { Draggable16 } from '@carbon/icons-react';
 
 const CardRoot = styled.article`
   box-sizing: border-box;
@@ -28,22 +28,25 @@ const Headline = styled.h2`
   font-weight: 700;
 `;
 
-interface Props extends ComponentPropsWithoutRef<"div"> {
+interface Props extends ComponentPropsWithoutRef<'div'> {
   title: string;
   key: string;
+  isInEditMode: boolean;
 }
 
 export const Card = forwardRef<
-  ComponentPropsWithoutRef<"div">,
+  ComponentPropsWithoutRef<'div'>,
   PropsWithChildren<Props>
->(({ style, className, ...props }, ref: any) => (
+>(({ style, className, isInEditMode, ...props }, ref: any) => (
   <CardRoot style={{ ...style }} className={className} ref={ref} {...props}>
-    <div
-      style={{ position: "absolute", top: 20, right: 10, opacity: 0.4 }}
-      className="drag"
-    >
-      <Draggable16 />
-    </div>
+    {isInEditMode && (
+      <div
+        style={{ position: 'absolute', top: 20, right: 10, opacity: 0.4 }}
+        className="drag"
+      >
+        <Draggable16 />
+      </div>
+    )}
     <Headline>{props.title}</Headline>
     <div>{props.children}</div>
   </CardRoot>
